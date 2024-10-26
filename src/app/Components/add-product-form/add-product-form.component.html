@@ -1,0 +1,108 @@
+<div class="container mt-5">
+    <h2>Add Product</h2>
+    <form [formGroup]="productaddForm" (ngSubmit)="add()">
+      
+      
+  
+      <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="productName"
+          formControlName="productName"
+          required
+        />
+        <div
+          *ngIf="
+            productaddForm.controls['productName'].invalid &&
+            (productaddForm.controls['productName'].dirty ||
+              productaddForm.controls['productName'].touched)
+          "
+          class="text-danger"
+        >
+          Product Name Is Required or Not Correct
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="unit">Unit:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="unit"
+          formControlName="unit"
+          required
+        />
+        <div
+          *ngIf="
+            productaddForm.controls['unit'].invalid &&
+            (productaddForm.controls['unit'].dirty ||
+              productaddForm.controls['unit'].touched)
+          "
+          class="text-danger"
+        >
+          Unit Is Required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="price">Price:</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          formControlName="price"
+          required
+          pattern="^\d+(\.\d{1,2})?$"
+        />
+        <div
+          *ngIf="
+            productaddForm.controls['price'].invalid &&
+            (productaddForm.controls['price'].dirty ||
+              productaddForm.controls['price'].touched)
+          "
+          class="text-danger"
+        >
+          Price Is Required or Not Correct
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="initialQuantity">Initial Quantity:</label>
+        <input
+          type="number"
+          class="form-control"
+          id="initialQuantity"
+          formControlName="initialQuantity"
+          required
+        />
+        <div
+          *ngIf="
+            productaddForm.controls['initialQuantity'].invalid &&
+            (productaddForm.controls['initialQuantity'].dirty ||
+              productaddForm.controls['initialQuantity'].touched)
+          "
+          class="text-danger"
+        >
+          Initial Quantity Is Required
+        </div>
+        
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+    <br /><br />
+  
+    <div class="text-danger">
+      <div>{{ productaddForm.value | json }}</div>
+    </div>
+  </div>
+  <br>  
+  <br>
+  <br>
+  <br>
+  <br>  
+  <br>
+  <br>
+  <br>

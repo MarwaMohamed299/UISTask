@@ -1,1 +1,121 @@
-<p>make-transaction works!</p>
+<div class="container mt-5">
+    <h2>Record Transaction</h2>
+    <form [formGroup]="transactionForm" (ngSubmit)="recordTransaction()">
+
+        <div class="form-group">
+            <label for="productName">Product Name:</label>
+            <select
+                class="form-control"
+                id="productName"
+                formControlName="productName"
+                (change)="onProductChange()"
+                required
+            >
+                <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+            </select>
+            <div
+                *ngIf="
+                    transactionForm.controls['productName'].invalid &&
+                    (transactionForm.controls['productName'].dirty ||
+                    transactionForm.controls['productName'].touched)
+                "
+                class="text-danger"
+            >
+                Product Name Is Required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity:</label>
+            <input
+                type="number"
+                class="form-control"
+                id="quantity"
+                formControlName="quantity"
+                required
+                (input)="calculateTotalPrice()"
+            />
+            <div
+                *ngIf="
+                    transactionForm.controls['quantity'].invalid &&
+                    (transactionForm.controls['quantity'].dirty ||
+                    transactionForm.controls['quantity'].touched)
+                "
+                class="text-danger"
+            >
+                Quantity Is Required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input
+                type="date"
+                class="form-control"
+                id="date"
+                formControlName="date"
+                required
+            />
+            <div
+                *ngIf="
+                    transactionForm.controls['date'].invalid &&
+                    (transactionForm.controls['date'].dirty ||
+                    transactionForm.controls['date'].touched)
+                "
+                class="text-danger"
+            >
+                Date Is Required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="unit">Unit:</label>
+            <input
+                type="text"
+                class="form-control"
+                id="unit"
+                formControlName="unit"
+                required
+                readonly
+            />
+            <div
+                *ngIf="
+                    transactionForm.controls['unit'].invalid &&
+                    (transactionForm.controls['unit'].dirty ||
+                    transactionForm.controls['unit'].touched)
+                "
+                class="text-danger"
+            >
+                Unit Is Required
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="totalPrice">Total Price:</label>
+            <input
+                type="number"
+                class="form-control"
+                id="totalPrice"
+                formControlName="totalPrice"
+                required
+                readonly
+            />
+            <div
+                *ngIf="
+                    transactionForm.controls['totalPrice'].invalid &&
+                    (transactionForm.controls['totalPrice'].dirty ||
+                    transactionForm.controls['totalPrice'].touched)
+                "
+                class="text-danger"
+            >
+                Total Price Is Required
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Record Transaction</button>
+    </form>
+    <br /><br />
+    <div class="text-danger">
+        <div>{{ transactionForm.value | json }}</div>
+    </div>
+</div>
