@@ -1,0 +1,65 @@
+    <div class="container-fluid" style="background-color: #000000">
+      <div class="jumbotron text-center text-light">
+        <div class="background-image">
+          <img
+            src="https://www.apple.com/v/iphone-15-pro/b/images/overview/welcome/hero__iztc7m63bfiy_large.jpg"
+            alt="Background Image"
+          />
+        </div>
+        <h1 class="display-4">Welcome to Apple</h1>
+        <p class="lead">Explore the latest and greatest items!</p>
+        <a class="btn btn-light btn-lg" href="#" role="button">Shop Now</a>
+      </div>
+  
+      <br /><br />
+  
+      <div class="container-fluid">
+        <div class="d-flex flex-wrap p-5 m-5">
+          <div
+            *ngFor="
+              let product of items
+                | paginate
+                  : {
+                      id: 'products-pagination',
+                      itemsPerPage: CountPerPage,
+                      currentPage: page,
+                      totalItems: totalCount
+                    }
+            "
+            class="col-md-4 mb-4"
+          >
+            <div class="card m-4">
+              <img
+                src="https://cdn.wccftech.com/wp-content/uploads/2021/03/2023-iPhone-with-periscope-telephoto-lens-768x503.jpg"
+                class="card-img-top"
+                alt="Product Image"
+              />
+              <div class="container p-3" style="background-color: #000000">
+                <div class="card-body text-light">
+                  <h5 class="card-title"></h5>
+                  <p class="card-text"></p>
+                  <h5 class="card-title"> Name :{{ product.productName }}</h5>
+                <p class="card-text"> Price :{{ product.price }} Euro</p>
+                <p class="card-text"> Current Quantity : {{ product.currentQuantity }} </p>
+                <p class="card-text">  Unit: {{ product.unit}} </p>
+
+
+                  <a
+                    class="btn btn-dark m-1"
+                    >Add</a
+                  >
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <pagination-controls
+        class="d-flex justify-content-center"
+        (pageChange)="GetProducts($event)"
+        id="products-pagination"
+      ></pagination-controls>
+      <br /><br /><br />
+    </div>
