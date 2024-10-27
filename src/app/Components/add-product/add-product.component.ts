@@ -1,9 +1,9 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {NgxPaginationModule} from 'ngx-pagination'; 
-import { ProductsService } from '../../Services/products.service';
+import { ProductsService } from '../../Services/Products/products.service';
 import { HttpClientModule } from '@angular/common/http';
-import { productReadDto } from '../../Models/ProductReadDto';
+import { productReadDto } from '../../Models/ProductsDtos/ProductReadDto';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class AddProductComponent implements OnInit {
   totalCount = 0;
   page = 1;
   items: productReadDto[] = [];
-  CountPerPage = 10;
+  CountPerPage = 3 ;
   productName : string ='';
   price : number = 0 ;
 

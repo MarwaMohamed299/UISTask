@@ -11,7 +11,7 @@
                 (change)="onProductChange()"
                 required
             >
-                <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+            <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
             </select>
             <div
                 *ngIf="
@@ -50,7 +50,7 @@
         <div class="form-group">
             <label for="date">Date:</label>
             <input
-                type="date"
+                type="datetime-local"
                 class="form-control"
                 id="date"
                 formControlName="date"
