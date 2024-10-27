@@ -18,7 +18,7 @@ export class AddProductFormComponent {
       productName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40)]],
       unit: ['', [Validators.required]], 
       price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
-      initialQuantity: ['', [Validators.required]],
+      quantity: ['', [Validators.required]],
 
     });
   }
@@ -27,7 +27,6 @@ export class AddProductFormComponent {
 
   add() {
     if (this.productaddForm.valid) {
- 
       this.productService.add(this.productaddForm.value).subscribe({
         next: (response: any) => {
           console.log('Product Added:', response);

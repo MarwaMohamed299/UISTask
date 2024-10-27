@@ -1,5 +1,5 @@
 export class productAddDto{
     productName: string ='';
-    initialQuantity: number=0;
+    quantity: number=0;
   }
   

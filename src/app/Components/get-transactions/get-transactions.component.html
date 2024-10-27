@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="transaction-overview  text-white p-4 rounded shadow" style="background-color: black;">
+      <h2 class="mb-4">Transaction Overview</h2>
+  
+      <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="mb-4">
+        <div class="input-group">
+          <label for="filterDate" class="input-group-text">Filter by Date:</label>
+          <input type="datetime-local" id="filterDate" formControlName="filterDate" class="form-control" />
+          <button type="submit" class="btn btn-primary ms-2">Filter</button>
+        </div>
+      </form>
+  
+      <table class="table table-dark ">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Total Price</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+            <td>{{ transaction.productName }}</td>
+            <td>{{ transaction.quantity }}</td>
+            <td>{{ transaction.unit }}</td>
+            <td>{{ transaction.totalPrice | currency }}</td>
+            <td>{{ transaction.date | date }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <pagination-controls (pageChange)="currentPage = $event" class="d-flex justify-content-center "></pagination-controls>
+      <br><br><br><br>
+    </div>
+  </div>
+  
