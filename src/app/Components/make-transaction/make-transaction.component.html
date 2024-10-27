@@ -3,27 +3,26 @@
     <form [formGroup]="transactionForm" (ngSubmit)="recordTransaction()">
 
         <div class="form-group">
-            <label for="productName">Product Name:</label>
+            <label for="productId">Product Name:</label>
             <select
-                class="form-control"
-                id="productName"
-                formControlName="productName"
-                (change)="onProductChange()"
-                required
+            class="form-control"
+            id="productId"
+            formControlName="productId"
+            (change)="onProductChange()"
+            required
             >
-            <option *ngFor="let product of products" [value]="product.id">{{product.productName}}</option>
+            <option *ngFor="let product of products" [value]="product.id">{{ product.productName }}</option>
             </select>
+
             <div
-                *ngIf="
-                    transactionForm.controls['productName'].invalid &&
-                    (transactionForm.controls['productName'].dirty ||
-                    transactionForm.controls['productName'].touched)
-                "
-                class="text-danger"
+              *ngIf="transactionForm.controls['productId'].invalid &&
+                     (transactionForm.controls['productId'].dirty ||
+                     transactionForm.controls['productId'].touched)"
+              class="text-danger"
             >
-                Product Name Is Required
+              Product Name is required.
             </div>
-        </div>
+          </div>
 
         <div class="form-group">
             <label for="quantity">Quantity:</label>

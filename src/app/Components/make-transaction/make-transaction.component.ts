@@ -2,27 +2,28 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransactionsService } from '../../Services/Transactions/transactions.service';
+import { TransactionAddDto } from '../../Models/TransactionsDtos/TransactionAddDto';
+import { ProductTransactionAddDto } from '../../Models/TransactionsDtos/ProductTransactionAddDto';
 
 @Component({
   selector: 'app-make-transaction',
   standalone: true,
-  imports: [ReactiveFormsModule ,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './make-transaction.component.html',
-  styleUrl: './make-transaction.component.css'
+  styleUrls: ['./make-transaction.component.css']
 })
 export class MakeTransactionComponent implements OnInit {
   transactionForm: FormGroup;
+  products = [
+    { id: '7874CF2B-B47E-4DF2-B2C4-37C04FC03DD7', productName: "product A", price: 13, unit: "Kilograms", InitialQuantity: 5, CurrentQuantity: 12 },
+    { id: '7874CF2B-B47E-4DF2-B2C4-37C04FC03DD7', productName: "product B", price: 10, unit: "Kilograms", InitialQuantity: 5, CurrentQuantity: 12 },
+    { id: '31AC27D7-4C50-4DC7-8019-1A4E52A37853', productName: "product C", price: 10, unit: "Kilograms", InitialQuantity: 5, CurrentQuantity: 12 },
+    { id: '1', productName: "product D", price: 10, unit: "Kilograms", InitialQuantity: 5, CurrentQuantity: 12 }
+  ];
 
-     products  = [
-      {"id": '76f22036-b23b-45bc-5ff7-08dcf5e79e6f' , "productName" : "product A" ,"price": 10 ,"unit" : "Kilograms" , "InitialQuantity" : 5 , "CurrentQuantity" : 12 },
-      {"id": 'c8a98f33-52b0-4b8f-5ff6-08dcf5e79e6f' , "productName" : "product B" ,"price": 10 , "unit" : "Kilograms" , "InitialQuantity" : 5 , "CurrentQuantity" : 12 },
-      {"id": 'e66a9928-d72b-4528-5ff5-08dcf5e79e6f' , "productName" : "product C" ,"price": 10 , "unit" : "Kilograms" , "InitialQuantity" : 5 , "CurrentQuantity" : 12 },
-      {"id": 1 , "productName" : "product D" ,"price": 10 , "unit" : "Kilograms" , "InitialQuantity" : 5 , "CurrentQuantity" : 12 }
-     ] 
-
-  constructor(private fb: FormBuilder , private transactionService : TransactionsService ) {
+  constructor(private fb: FormBuilder, private transactionService: TransactionsService) {
     this.transactionForm = this.fb.group({
-      productName: ['', Validators.required],
+      productId: ['', Validators.required],
       quantity: ['', Validators.required],
       date: ['', Validators.required],
       unit: [{ value: '', disabled: true }, Validators.required],
@@ -31,60 +32,57 @@ export class MakeTransactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchProducts();
-  }
-
-  fetchProducts() {
-    // Call your service to fetch products
-    // For example: this.products = this.productService.getProducts();
+    this.transactionForm.get('quantity')?.valueChanges.subscribe(() => this.calculateTotalPrice());
+    this.transactionForm.get('productId')?.valueChanges.subscribe(() => this.onProductChange());
   }
 
   onProductChange() {
-    const selectedProduct = this.products.find(p => p.id === this.transactionForm.value.productName);
+    const selectedProduct = this.products.find(p => p.id === this.transactionForm.value.productId);
     if (selectedProduct) {
       this.transactionForm.patchValue({ unit: selectedProduct.unit });
-      this.calculateTotalPrice();
+      this.calculateTotalPrice(); 
     }
   }
 
-  calculateTotalPrice() {
+  calculateTotalPrice(): void {
     const quantity = this.transactionForm.value.quantity;
-    const selectedProduct = this.products.find(p => p.id === this.transactionForm.value.productName);
+    const selectedProduct = this.products.find(p => p.id === this.transactionForm.value.productId);
+
+    console.log('Selected Product:', selectedProduct);
+    console.log('Quantity:', quantity);
+
     if (selectedProduct && quantity) {
-      this.transactionForm.patchValue({ totalPrice: selectedProduct.price * quantity });
+      const totalPrice = selectedProduct.price * quantity;
+      console.log('Calculated Total Price:', totalPrice); 
+
+      this.transactionForm.patchValue({ totalPrice });
+    } else {
+      console.log('Total Price not calculated. Missing product or quantity.');
     }
   }
-
-  // recordTransaction() {
-  //   if (this.transactionForm.valid) {
-  //     const transactionData = { ...this.transactionForm.value };
-  //     transactionData.productName = this.transactionForm.value.productName as string;
-  //     this.transactionService.
-  //     addTransaction( this.transactionForm.value)
-  //     .subscribe({
-  //       next : (response : any) =>{
-  //         console.log('Product Name ' , this.transactionForm.value.productName , response)
-  //       } ,
-  //       error : ( error : any ) => console.error(error)
-  //     });
-  //   }
   recordTransaction() {
     if (this.transactionForm.valid) {
-      // Clone the form data to modify it before sending
-      const transactionData = { ...this.transactionForm.value };
-      
-      // Convert productName to a GUID format if it's a string
-      transactionData.productName = this.transactionForm.value.productName as string;
-  
-      this.transactionService.addTransaction(transactionData).subscribe({
-        next: (response: any) => {
-          console.log('Transaction recorded successfully:', response);
+      const productTransactionDto: ProductTransactionAddDto = {
+        productId: this.transactionForm.value.productId,
+        quantity: this.transactionForm.value.quantity,
+        totalPrice: this.transactionForm.get('totalPrice')?.value
+      };
+
+      const transactionDto: TransactionAddDto = {
+        date: new Date(this.transactionForm.get('date')?.value).toISOString(),
+        productTransactions: [productTransactionDto]
+      };
+
+      console.log('Transaction DTO:', transactionDto); 
+      this.transactionService.addTransaction(transactionDto).subscribe({
+        next: (response) => {
+          console.log('Transaction recorded:', response);
         },
-        error: (error: any) => console.error('Error recording transaction:', error),
+        error: (error) => {
+          console.error('Error recording transaction:', error);
+          console.error('Validation errors:', error.error.errors);
+        }
       });
     }
   }
-  
-  }
-
-
+}
