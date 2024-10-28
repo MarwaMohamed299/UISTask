@@ -1,38 +1,45 @@
-<div class="container-fluid">
-    <div class="transaction-overview  text-white p-4 rounded shadow" style="background-color: black;">
-      <h2 class="mb-4">Transaction Overview</h2>
+<div class="container-fluid mt-4">
+    <div class="transaction-filter text-white p-4 rounded shadow" style="background-color: #343a40;">
+      <h2 class="mb-4">Filter Transactions by Date</h2>
+      <div class="input-group mb-3">
+        <input 
+          type="date" 
+          class="form-control"
+          [(ngModel)]="date" 
+          placeholder="Enter date" 
+          required
+        />
+        <button (click)="fetchTransactions()" class="btn btn-primary ms-2">Filter</button>
+      </div>
   
-      <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="mb-4">
-        <div class="input-group">
-          <label for="filterDate" class="input-group-text">Filter by Date:</label>
-          <input type="datetime-local" id="filterDate" formControlName="filterDate" class="form-control" />
-          <button type="submit" class="btn btn-primary ms-2">Filter</button>
-        </div>
-      </form>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
   
-      <table class="table table-dark ">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Total Price</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let transaction of transactions | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
-            <td>{{ transaction.productName }}</td>
-            <td>{{ transaction.quantity }}</td>
-            <td>{{ transaction.unit }}</td>
-            <td>{{ transaction.totalPrice | currency }}</td>
-            <td>{{ transaction.date | date }}</td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <pagination-controls (pageChange)="currentPage = $event" class="d-flex justify-content-center "></pagination-controls>
-      <br><br><br><br>
+      <div *ngIf="totalCount > 0" class="mt-4">
+        <h3>Total Transactions: {{ totalCount }}</h3>
+        
+        <table class="table table-dark table-striped table-hover mt-3">
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Date</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Total Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of transactions">
+              <td>{{ transaction.id }}</td>
+              <td>{{ transaction.date | date: 'yyyy-MM-dd' }}</td>
+              <ng-container *ngFor="let product of transaction.productTransactions">
+                <td>{{ product.quantity }}</td>
+                <td>kg</td> 
+                <td>{{ product.totalPrice | currency }}</td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   

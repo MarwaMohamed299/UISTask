@@ -13,15 +13,17 @@ export class TransactionsService {
 
   private  Base_URL = "https://localhost:7141/api/Transactions/" 
 
-  addTransaction(newTransaction : TransactionAddDto) : Observable<TransactionAddDto>{
-    return this.httpClient.post<TransactionAddDto>(this.Base_URL , newTransaction )
-  }
-  
+  addTransaction(newTransaction: TransactionAddDto): Observable<TransactionAddDto> {
+    return this.httpClient.post<TransactionAddDto>('https://localhost:7141/api/Transactions/', newTransaction);
+}
+
+
   getAllTransactions(page: number, pageSize: number, filterDate?: string): Observable<{ transactions: TransactionReadDto[], totalCount: number }> {
-    let url = `${this.Base_URL}?page=${page}&pageSize=${pageSize}`;
+    let url = `https://localhost:7141/api/Transactions/by-date?pageNumber=${page}&pageSize=${pageSize}`;
     if (filterDate) {
-      url += `&date=${filterDate}`;
+      url += `&date=${encodeURIComponent(filterDate)}`;
     }
     return this.httpClient.get<{ transactions: TransactionReadDto[], totalCount: number }>(url);
   }
+  
 }
