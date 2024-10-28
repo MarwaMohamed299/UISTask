@@ -11,7 +11,6 @@ export class TransactionsService {
 
   constructor(private httpClient : HttpClient) { }
 
-  private  Base_URL = "https://localhost:7141/api/Transactions/" 
 
   addTransaction(newTransaction: TransactionAddDto): Observable<TransactionAddDto> {
     return this.httpClient.post<TransactionAddDto>('https://localhost:7141/api/Transactions/', newTransaction);

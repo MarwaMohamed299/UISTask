@@ -1,25 +1,42 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ProductsService } from '../../Services/Products/products.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-product-form',
   standalone: true,
-  imports: [CommonModule , ReactiveFormsModule ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-product-form.component.html',
-  styleUrl: './add-product-form.component.css'
+  styleUrl: './add-product-form.component.css',
 })
 export class AddProductFormComponent {
   productaddForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private productService: ProductsService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private productService: ProductsService
+  ) {
     this.productaddForm = this.formBuilder.group({
-      productName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40)]],
-      unit: ['', [Validators.required]], 
-      price: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+      productName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(40),
+        ],
+      ],
+      unit: ['', [Validators.required]],
+      price: [
+        '',
+        [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)],
+      ],
       quantity: ['', [Validators.required]],
-
     });
   }
   add() {

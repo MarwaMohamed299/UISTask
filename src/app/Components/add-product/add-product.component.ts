@@ -27,7 +27,6 @@ export class AddProductComponent implements OnInit {
   }
   
   constructor( private productService : ProductsService) {
-    
   }
   GetProducts(page: number) {
     console.log('Page Change Event:', page);
