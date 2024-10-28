@@ -22,9 +22,6 @@ export class AddProductFormComponent {
 
     });
   }
-
- 
-
   add() {
     if (this.productaddForm.valid) {
       this.productService.add(this.productaddForm.value).subscribe({

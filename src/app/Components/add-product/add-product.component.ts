@@ -20,6 +20,7 @@ export class AddProductComponent implements OnInit {
   CountPerPage = 3 ;
   productName : string ='';
   price : number = 0 ;
+  initialQuantity: number = 0
 
   ngOnInit(): void {
     this.GetProducts(1);

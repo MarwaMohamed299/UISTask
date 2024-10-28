@@ -3,5 +3,5 @@ export class productReadDto{
   productName: string ='';
   unit: string='';
   price: number=0;
-  quantity: number=0;
+  initialQuantity: number=0;
 }
